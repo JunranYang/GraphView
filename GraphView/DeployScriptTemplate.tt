@@ -43,7 +43,7 @@ GO
 CREATE FUNCTION <#=AssemblyName#>_<#=edgeName#>_ExclusiveEdgeGenerator(
 @PathVarbinary varbinary(max), @nodeid bigint, @array varbinary(max), @array2 varbinary(max)) RETURNs TABLE
 (
-	EdgeId int, EdgeColumnId bigint, Sink bigint<#
+	EdgeId int, EdgeColumnId bigint, Sink bigint, PathBytes varbinary(max)<#
 	for (var i = 0; i < variables.Count; ++i)
 	{
 		WriteLine(",");
@@ -82,9 +82,7 @@ with  allPath(sink, varPath) as (
 
 		union all
 
-		select newpath.Sink, allpath.varPath + 
-		
-		dbo.ConvertNumberIntoBinaryForPath(allpath.sink, <#=edgeColumnId#>, newpath.EdgeId) as Path
+		select newpath.Sink, newpath.PathBytes as Path
 		from (allPath join <#=NodeTable#> on  allPath.sink = <#=NodeTable#>.GlobalNodeId)
 		cross apply <#=AssemblyName#>_<#=edgeName#>_ExclusiveEdgeGenerator(allPath.varPath,<#=NodeTable#>.GlobalNodeId,
 		  <#=NodeTable#>.<#=edgeName#>, <#=NodeTable#>.<#=edgeName#>DeleteCol) as newPath
