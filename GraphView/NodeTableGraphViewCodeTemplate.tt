@@ -62,7 +62,7 @@ public partial class UserDefinedFunctions
 <#foreach (var variable in variables) {#>
 	  <#=variable.Item1 #> = decoderResult.<#=variable.Item1 #>;
 <#}#>
-	}
+	} 
 
 	[SqlFunction(
 		DataAccess = DataAccessKind.None,
